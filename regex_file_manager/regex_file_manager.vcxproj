@@ -186,9 +186,6 @@
   <ItemGroup>
     <ResourceCompile Include="regex_file_manager.rc" />
   </ItemGroup>
-  <ItemGroup>
-    <Image Include="icon1.ico" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
