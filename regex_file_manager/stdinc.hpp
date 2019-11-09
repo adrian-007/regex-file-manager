@@ -8,7 +8,6 @@
 #define _WTL_NO_CSTRING
 
 #define _ATL_NO_OPENGL
-#define _ATL_NO_MSIMG
 #define _ATL_NO_COM
 #define _ATL_NO_HOSTING
 #define _ATL_NO_OLD_NAMES
@@ -17,8 +16,10 @@
 #define _ATL_NO_SERVICE
 #define _ATL_NO_DOCHOSTUIHANDLER
 
-#define _WIN32_WINNT	0x0502
-#define _WIN32_IE		0x0502
+#define WINVER           0x0600
+#define _WIN32_WINNT     0x0600
+#define _WIN32_IE        0x0700
+#define _RICHEDIT_VER    0x0300
 
 #define _CRT_SECURE_NO_WARNINGS
 

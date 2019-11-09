@@ -129,7 +129,7 @@ LRESULT Dialog::OnBnClickedBrowseRootPath(WORD /*wNotifyCode*/, WORD /*wID*/, HW
 
 LRESULT Dialog::onAddItem(UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
-	item_ptr p = reinterpret_cast<item*>(wParam);
+	item_ptr p(reinterpret_cast<item*>(wParam));
 
 	int pos = addItem(p->oldName.c_str(), p->newName.c_str(), p->iconId, p->newName.empty() ? 0 : 1);
 	ctrlList.SetItemData(pos, (DWORD_PTR)p.get());
@@ -155,11 +155,13 @@ LRESULT Dialog::onUpdateStatus(UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/, 
 
 LRESULT Dialog::onLockControls(UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
-	CWindow search = GetDlgItem(IDC_SEARCH);
-	CWindow rename = GetDlgItem(IDC_RENAME_FILES);
+	auto searchWnd = GetDlgItem(IDC_SEARCH);
+	auto renameWnd = GetDlgItem(IDC_RENAME_FILES);
+	auto deleteWnd = GetDlgItem(IDC_DELETE_FILES);
 
-	search.EnableWindow(wParam != 0 ? FALSE : TRUE);
-	rename.EnableWindow(wParam != 0 ? FALSE : TRUE);
+	searchWnd.EnableWindow(wParam != 0 ? FALSE : TRUE);
+	renameWnd.EnableWindow(wParam != 0 ? FALSE : TRUE);
+	deleteWnd.EnableWindow(wParam != 0 ? FALSE : TRUE);
 
 	return 0;
 }
@@ -295,7 +297,7 @@ void Dialog::thread_Search(ThreadParams& params)
 
 	if(params.format.empty())
 	{
-		params.format = L"$0";
+		params.format = L"$&";
 	}
 
 	if(params.pattern.empty())
@@ -307,7 +309,7 @@ void Dialog::thread_Search(ThreadParams& params)
 
 	try
 	{
-		rx = std::wregex(params.pattern, params.icase ? std::regex_constants::ECMAScript | std::regex_constants::icase : std::regex_constants::ECMAScript);
+		rx = std::wregex(params.pattern, params.icase ? (std::regex_constants::ECMAScript | std::regex_constants::icase) : std::regex_constants::ECMAScript);
 	}
 	catch(const std::regex_error& err)
 	{
